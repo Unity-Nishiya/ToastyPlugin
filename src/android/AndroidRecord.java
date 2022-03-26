@@ -37,6 +37,7 @@ public class AudioRecordTest extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
+        //　必要としている権限を持っているかの確認 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_RECORD_AUDIO_PERMISSION:
@@ -49,6 +50,8 @@ public class AudioRecordTest extends AppCompatActivity {
     }
 
     private void onRecord(boolean start) {
+        // 録音している
+        // 引数がtrueなら録音を開始するので意味が違うかもしれない
         if (start) {
             startRecording();
         } else {
@@ -57,6 +60,8 @@ public class AudioRecordTest extends AppCompatActivity {
     }
 
     private void onPlay(boolean start) {
+        // 再生を開始している
+        // 引数がtrueなら再生を開始するので意味が違うかもしれない
         if (start) {
             startPlaying();
         } else {
@@ -65,9 +70,10 @@ public class AudioRecordTest extends AppCompatActivity {
     }
 
     private void startPlaying() {
+        // 再生を開始する
         player = new MediaPlayer();
         try {
-            player.setDataSource(fileName);
+            player.setDataSource(fileName); // この fileNameはどこから持ってきたの？
             player.prepare();
             player.start();
         } catch (IOException e) {
@@ -76,16 +82,22 @@ public class AudioRecordTest extends AppCompatActivity {
     }
 
     private void stopPlaying() {
+        // 再生を終了する
         player.release();
         player = null;
     }
 
     private void startRecording() {
+        // 録音を開始する
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        recorder.setOutputFile(fileName);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        // https://developer.android.com/reference/android/media/MediaRecorder.OutputFormat
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); // ここ何？
+        recorder.setOutputFile(fileName); // このファイルネームはどこから持ってきたの
+
+        // https://developer.android.com/reference/android/media/MediaRecorder.AudioEncoder
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC); // ここ何？
 
         try {
             recorder.prepare();
@@ -97,12 +109,14 @@ public class AudioRecordTest extends AppCompatActivity {
     }
 
     private void stopRecording() {
+        // 録音を終了する
         recorder.stop();
         recorder.release();
         recorder = null;
     }
 
     class RecordButton extends Button {
+        // 録音ボタン
         boolean mStartRecording = true;
 
         OnClickListener clicker = new OnClickListener() {
@@ -125,6 +139,7 @@ public class AudioRecordTest extends AppCompatActivity {
     }
 
     class PlayButton extends Button {
+        // 再生ボタン
         boolean mStartPlaying = true;
 
         OnClickListener clicker = new OnClickListener() {
@@ -151,11 +166,14 @@ public class AudioRecordTest extends AppCompatActivity {
         super.onCreate(icicle);
 
         // Record to the external cache directory for visibility
+        // テストしながら実機で確認できると嬉しい。
+        // cordova側のボタンに紐つけられるかの話も込みで
         fileName = getExternalCacheDir().getAbsolutePath();
-        fileName += "/audiorecordtest.3gp";
+        fileName += "/audiorecordtest.mp4";
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
+        // ボタンを実際に作る話をしている
         LinearLayout ll = new LinearLayout(this);
         recordButton = new RecordButton(this);
         ll.addView(recordButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
