@@ -5,7 +5,7 @@ function ToastyPlugin() {}
 // Message is a string, duration may be 'long' or 'short'
 ToastyPlugin.prototype.show = function(message, duration, successCallback, errorCallback) {
   var options = {};
-  options.message = "this is sample";
+  options.message = message;
   options.duration = duration;
   cordova.exec(successCallback, errorCallback, 'ToastyPlugin', 'show', [options]);
 }
