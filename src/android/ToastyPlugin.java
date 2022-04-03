@@ -22,7 +22,7 @@ public class ToastyPlugin extends CordovaPlugin {
 
         try {
           JSONObject options = args.getJSONObject(0);
-          message = options.getString("message");
+          message = "show command";
           duration = options.getString("duration");
         } catch (JSONException e) {
           callbackContext.error("Error encountered: " + e.getMessage());
@@ -34,10 +34,28 @@ public class ToastyPlugin extends CordovaPlugin {
             DURATION_LONG.equals(duration) ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
         // Display toast
         toast.show();
-        // Send a positive result to the callbackContext
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
-        callbackContext.sendPluginResult(pluginResult);
-        return true;
+        break;
+      }
+
+      case "start": {
+        String message;
+        String duration;
+
+        try {
+          JSONObject options = args.getJSONObject(0);
+          message = "start command";
+          duration = options.getString("duration");
+        } catch (JSONException e) {
+          callbackContext.error("Error encountered: " + e.getMessage());
+          return false;
+        }
+
+        // Create the toast
+        Toast toast = Toast.makeText(cordova.getActivity(), message,
+            DURATION_LONG.equals(duration) ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        // Display toast
+        toast.show();
+        break;
       }
 
       default: {
@@ -45,5 +63,9 @@ public class ToastyPlugin extends CordovaPlugin {
         return false;
       }
     }
+    // Send a positive result to the callbackContext
+    PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+    callbackContext.sendPluginResult(pluginResult);
+    return true;
   }
 }
