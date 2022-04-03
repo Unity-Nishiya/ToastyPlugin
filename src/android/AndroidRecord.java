@@ -37,7 +37,7 @@ public class AudioRecordTest extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        //　必要としている権限を持っているかの確認 
+        // 必要としている権限を持っているかの確認 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_RECORD_AUDIO_PERMISSION:
@@ -172,16 +172,6 @@ public class AudioRecordTest extends AppCompatActivity {
         fileName += "/audiorecordtest.mp4";
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-
-        // ボタンを実際に作る話をしている
-        LinearLayout ll = new LinearLayout(this);
-        recordButton = new RecordButton(this);
-        ll.addView(recordButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-        playButton = new PlayButton(this);
-        ll.addView(playButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-        setContentView(ll);
     }
 
     @Override

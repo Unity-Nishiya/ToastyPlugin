@@ -28,8 +28,6 @@ public class ToastyPlugin extends CordovaPlugin {
         JSONObject options = args.getJSONObject(0);
         message = options.getString("message");
         duration = options.getString("duration");
-        System.out.println(message);
-        System.out.println(duration);
     } catch (JSONException e) {
         callbackContext.error("Error encountered: " + e.getMessage());
         return false;
