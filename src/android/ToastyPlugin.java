@@ -22,7 +22,7 @@ public class ToastyPlugin extends CordovaPlugin {
 
         try {
           JSONObject options = args.getJSONObject(0);
-          message = "show command";
+          message = "show " + options.getString("message");
           duration = options.getString("duration");
         } catch (JSONException e) {
           callbackContext.error("Error encountered: " + e.getMessage());
@@ -43,7 +43,7 @@ public class ToastyPlugin extends CordovaPlugin {
 
         try {
           JSONObject options = args.getJSONObject(0);
-          message = "start command";
+          message = "start " + options.getString("message");
           duration = options.getString("duration");
         } catch (JSONException e) {
           callbackContext.error("Error encountered: " + e.getMessage());
